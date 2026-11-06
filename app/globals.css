@@ -492,3 +492,35 @@ td.m { font: 500 14px/20px var(--f-mono); white-space: nowrap; }
   opacity: clamp(0, calc(var(--pp, 1) * 1.6), 1);
 }
 [data-fx-on] [data-pop="1"] { rotate: calc((1 - var(--pp, 1)) * 2.5deg); }
+
+/* Get Canary deck (components/Deck.tsx). Default: the cards as a grid. */
+.deck { margin-top: 40px; }
+.deck__sticky { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+.deck__card { padding: 0 !important; gap: 0 !important; }
+.deck__card .get-fig { margin: 0; }
+.deck__body { flex: 1; padding: var(--gp); display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+@media (max-width: 860px) { .deck__sticky { grid-template-columns: minmax(0, 1fr); } }
+/* desktop with room and motion: pinned, each card pops up and fills the screen */
+@media (min-width: 861px) and (min-height: 760px) and (prefers-reduced-motion: no-preference) {
+  .deck { position: relative; height: calc(100vh + var(--n) * 110vh); margin-top: 24px; }
+  .deck__sticky { position: sticky; top: 0; height: 100vh; display: block; }
+  .deck__card {
+    position: absolute; left: 50%; top: calc(50% + 40px);
+    width: min(1184px, calc(100vw - 2 * var(--pad))); height: min(720px, calc(100vh - 150px));
+    display: grid !important; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+    transform: translate(-50%, calc(-50% + (1 - var(--g, 0)) * 60vh)) scale(calc(.62 + var(--g, 0) * .38 - var(--c, 0) * .07));
+    opacity: clamp(0, calc(var(--g, 0) * 5), 1);
+    filter: brightness(calc(1 - var(--c, 0) * .3));
+    box-shadow: 0 40px 90px -40px rgba(8,27,36,.5) !important;
+    will-change: transform;
+  }
+  .deck__card .get-fig { aspect-ratio: auto; height: 100%; border-bottom: 0; border-right: 1px solid var(--border); }
+  .deck__card .get-fig img { transform: scale(calc(1.2 - var(--g, 0) * .2)); }
+  .deck__body { overflow: auto; justify-content: center; gap: 14px; padding: clamp(24px, 2.6vw, 40px); }
+  .deck__body .specs > div { padding: 9px 0; }
+  .deck__body pre { padding: 12px 16px; font-size: 12.5px; line-height: 19px; }
+  .deck .deck__sticky .deck__card:hover { transform: translate(-50%, calc(-50% + (1 - var(--g, 0)) * 60vh)) scale(calc(.62 + var(--g, 0) * .38 - var(--c, 0) * .07)); }
+  .deck .deck__card [data-fx] { clip-path: none; }
+  .deck__card:nth-child(2) .get-fig img { object-position: 24% 50%; } /* keep the robot in frame */
+  .deck .deck__card [data-fx] img { opacity: 1; }
+}

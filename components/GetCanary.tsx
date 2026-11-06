@@ -3,6 +3,7 @@ import { Icon } from "./Icon";
 import { Badge } from "./Badge";
 import { ExtensionLink } from "./ExtensionLink";
 import { rich } from "./rich";
+import { Deck } from "./Deck";
 import { GET_CANARY } from "@/lib/content";
 
 /* Light syntax colouring for the snippet: keywords and strings. */
@@ -23,11 +24,12 @@ export function GetCanary() {
           <p className="idx">04 — Get Canary</p>
           <div><h2 id="get-h">Get <b>Canary</b></h2></div>
         </div>
-        <div className="get">
-          <div className="card" data-pop="0">
+        <Deck>
+          <div className="card deck__card">
             <figure className="get-fig" data-fx>
               <Image src={ext.image} alt={ext.alt} fill sizes="(max-width: 860px) 100vw, 580px" />
             </figure>
+            <div className="deck__body">
             <div className="top"><span className="tile"><span className="bird" aria-hidden="true" /></span><h3>{ext.title}</h3></div>
             <p>{ext.lede}</p>
             <ExtensionLink className="get-btn get-btn--lg" source={ext.source} />
@@ -38,12 +40,14 @@ export function GetCanary() {
               <span className="get-foot__label">Every request gets a label</span>
               <div className="row-wrap">{ext.labels.map((s) => <Badge key={s} status={s} />)}</div>
             </div>
+            </div>
           </div>
 
-          <div className="card" data-pop="1">
+          <div className="card deck__card">
             <figure className="get-fig" data-fx>
               <Image src={agent.image} alt={agent.alt} fill sizes="(max-width: 860px) 100vw, 580px" />
             </figure>
+            <div className="deck__body">
             <div className="top"><span className="tile"><Icon name="code" size={24} /></span><h3>{agent.title}</h3></div>
             <p>{agent.lede}</p>
             <dl className="specs">
@@ -57,8 +61,9 @@ export function GetCanary() {
               <a className="btn btn--ghost" href={agent.source} target="_blank" rel="noopener">Read the SDK on GitHub<Icon name="arrowRight" /></a>
               <span className="row-wrap">{agent.works.map((w) => <span key={w} className="chip">{w}</span>)}</span>
             </div>
+            </div>
           </div>
-        </div>
+        </Deck>
       </div>
     </section>
   );
