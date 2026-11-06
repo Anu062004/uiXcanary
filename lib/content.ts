@@ -35,7 +35,7 @@ export const STATUS: Record<Status, { label: string; icon: IconName }> = {
   ok: { label: "Protected", icon: "shield" },
   part: { label: "IP only", icon: "globe" },
   blk: { label: "Blocked", icon: "ban" },
-  exp: { label: "Exposed", icon: "alert" },
+  exp: { label: "Detected, unprotected", icon: "alert" },
   ni: { label: "Not inspected", icon: "eyeOff" },
 };
 
@@ -140,3 +140,44 @@ export const SPONSORS = [
   { name: "Uniswap Foundation", href: "https://uniswap.org", domain: "uniswap.org", logo: "/assets/sponsors/uniswap.svg", w: 1001, h: 251, variant: "plain" as const },
   { name: "Ethereum Foundation", href: "https://ethereum.org", domain: "ethereum.org", logo: "/assets/sponsors/ethereum.svg", w: 1920, h: 1080, variant: "crop" as const },
 ];
+
+/* Get Canary. Every line here is checked against the official repo's READMEs
+   (README.md quick start, extension/README.md, packages/gateway, packages/agent). */
+export const GET_CANARY = {
+  extension: {
+    image: "/assets/images/get-extension.jpg",
+    alt: "A frosted teal glass shield in front of a glass browser window: a teal light line passes through while small red particles stop against the shield",
+    title: "Browser extension",
+    lede: "Works with dapps as they are: no fork, no changes. What it covers is measured, gaps included.",
+    source: `${REPO_URL}/tree/main/extension`,
+    steps: [
+      { k: "Gateway", v: "Run a tor-js gateway first: one Docker container from `gateway/`. The build points Canary at it." },
+      { k: "Build", v: "`cd extension && npm install && npm run build`" },
+      { k: "Load", v: "Chrome → Extensions → Developer mode → **Load unpacked** → `extension/dist`. Use a separate Chrome profile: it runs on every site." },
+      { k: "Use", v: "Reload your dapp tabs. The popup shows what was protected, blocked or missed, and the site’s privacy label from ENS." },
+    ],
+    labels: ["ok", "part", "blk", "exp", "ni"] as Status[],
+  },
+  agent: {
+    image: "/assets/images/get-sdk.jpg",
+    alt: "A smiling white robot at a desk whose cables all run into one glowing teal gateway cube, leaving as a single cable",
+    title: "Agent SDK and gateway",
+    lede: "One local policy for any agent. The SDK plugs into viem or ethers.",
+    source: `${REPO_URL}/tree/main/packages/agent`,
+    specs: [
+      { k: "Gateway", v: "Any language. Point the RPC URL at `127.0.0.1:18545/<chainId>` and `HTTPS_PROXY` at `127.0.0.1:18080`." },
+      { k: "SDK", v: "viem transport, ethers provider, and `llmFetch`, which turns wallets into `WALLET_1` before a prompt leaves." },
+      { k: "Policy", v: "The agent’s ENS `privacy.manifest`. Undeclared hosts are blocked." },
+    ],
+    file: "agent.ts",
+    code: `const canary = await createCanary({
+  gateway: "http://127.0.0.1:18545",
+  wallets: [account.address]
+});
+const client = createPublicClient({
+  chain: sepolia,
+  transport: canary.viemTransport()
+});`,
+    works: ["viem", "ethers v6", "Python via gateway"],
+  },
+};

@@ -483,3 +483,12 @@ td.m { font: 500 14px/20px var(--f-mono); white-space: nowrap; }
   .story__t { font-size: clamp(24px, 6vw, 32px); }
   .story__d code { background: var(--subtle) !important; }
 }
+
+/* cards that pop in as they rise (ScrollFX sets --pp, 0 → 1 with a slight overshoot) */
+[data-fx-on] [data-pop] {
+  translate: 0 calc((1 - var(--pp, 1)) * 90px);
+  scale: calc(.86 + var(--pp, 1) * .14);
+  rotate: calc((1 - var(--pp, 1)) * -2.5deg);
+  opacity: clamp(0, calc(var(--pp, 1) * 1.6), 1);
+}
+[data-fx-on] [data-pop="1"] { rotate: calc((1 - var(--pp, 1)) * 2.5deg); }

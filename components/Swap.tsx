@@ -19,7 +19,7 @@ export function Swap() {
       <SwapStory />
       <div className="container">
         <div className="get">
-          <div className="card rv" style={{ "--d": 1 } as React.CSSProperties}>
+          <div className="card" data-pop="0">
             <div className="top"><span className="tile"><Icon name="swap" size={24} /></span><h3>Canary Swap</h3></div>
             <p>Uniswap v4 quotes read from the chain, and swaps through the Universal Router. No quote API, and no address in the request.</p>
             <a className="get-btn get-btn--lg" href={SWAP_URL} target="_blank" rel="noopener">Open Canary Swap<Icon name="arrowUpRight" /></a>
@@ -35,7 +35,7 @@ export function Swap() {
             </div>
           </div>
 
-          <div className="card rv" style={{ "--d": 2 } as React.CSSProperties}>
+          <div className="card" data-pop="1">
             <div className="top"><span className="tile"><Icon name="eye" size={24} /></span><h3>What a quote sends</h3></div>
             <p>The same 1 ETH → USDC quote on Ethereum, two ways. Recorded from app.uniswap.org with a synthetic wallet.</p>
             <div className="code">
