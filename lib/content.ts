@@ -3,6 +3,29 @@ import type { IconName } from "@/components/Icon";
 export const REPO_URL = "https://github.com/SCARPxVeNOM/canary_repo";
 export const SWAP_URL = "https://canary-swap.vercel.app";
 
+/* Canary Swap story: three full-screen images, one after another (components/SwapStory.tsx).
+   tone: the image's brightness, so the caption picks readable colours. */
+export const SWAP_STORY = [
+  {
+    image: "/assets/images/swap.jpg", tone: "light" as const,
+    alt: "Two frosted glass coins pass each other along a teal light line through a glass arch, while a rust-red paper tag lies left behind on the near side",
+    kicker: "Canary Swap", title: "Quote without your address.",
+    body: "The swap goes through. Your address stays behind.",
+  },
+  {
+    image: "/assets/images/swap-quote.jpg", tone: "dark" as const,
+    alt: "A glass instrument with a teal gauge hovers over a frosted teal coin on a glass rail, joined only by a single vertical light line",
+    kicker: "Quote", title: "The price comes from the chain.",
+    body: "An `eth_call` to the Uniswap v4 Quoter with the pool key and the amount. No quote API sees who is asking.",
+  },
+  {
+    image: "/assets/images/swap-compare.jpg", tone: "light" as const,
+    alt: "Two glass tiles side by side: the frosted left one holds a glowing rust-red bead, the clear right one with a teal edge is empty",
+    kicker: "What a quote sends", title: "Same price. One less secret.",
+    body: "app.uniswap.org sends your wallet as `swapper`. Canary Swap sends no address. In our runs both came to about 2,236 USDC.",
+  },
+];
+
 /* Set your Chrome Web Store URL here once; every "Get extension" button uses it. */
 export const EXTENSION_URL = "";
 

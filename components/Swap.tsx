@@ -1,4 +1,5 @@
 import { Icon } from "./Icon";
+import { SwapStory } from "./SwapStory";
 import { REPO_URL, SWAP_URL } from "@/lib/content";
 
 /* Canary Swap (official repo: swap/). The request bodies are from the recorded scan of
@@ -14,6 +15,9 @@ export function Swap() {
             <p className="lede">Asking app.uniswap.org for a quote sends your address to Uniswap’s server as <code>swapper</code>, with the tokens and the amount, before you sign anything. Canary Swap asks the chain instead.</p>
           </div>
         </div>
+      </div>
+      <SwapStory />
+      <div className="container">
         <div className="get">
           <div className="card rv" style={{ "--d": 1 } as React.CSSProperties}>
             <div className="top"><span className="tile"><Icon name="swap" size={24} /></span><h3>Canary Swap</h3></div>
