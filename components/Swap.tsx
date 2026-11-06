@@ -9,7 +9,7 @@ export function Swap() {
     <section className="sec" id="swap" aria-labelledby="sw-h">
       <div className="container">
         <div className="sec-head rv">
-          <p className="idx">03 — Canary Swap</p>
+          <p className="idx">04 — Canary Swap</p>
           <div>
             <h2 id="sw-h">Quote <b>without your address</b></h2>
             <p className="lede">Asking app.uniswap.org for a quote sends your address to Uniswap’s server as <code>swapper</code>, with the tokens and the amount, before you sign anything. Canary Swap asks the chain instead.</p>

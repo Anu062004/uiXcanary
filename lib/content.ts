@@ -42,6 +42,7 @@ export const STATUS: Record<Status, { label: string; icon: IconName }> = {
 export const NAV = [
   { id: "top", label: "Home" },
   { id: "journal", label: "How it works" },
+  { id: "demo", label: "Demo" },
   { id: "evidence", label: "Evidence" },
   { id: "swap", label: "Swap" },
   { id: "get", label: "Get Canary" },
@@ -134,6 +135,20 @@ export const EVIDENCE = [
 
 /* Stress run of the extension on Canary Swap, 6 Nov 2026 (official repo: swap/test/stress.mjs, test-artifacts/swap/stress-canary.json). */
 export const STRESS = { calls: 651, checked: 397, requests: 269, mean: "1.4 s", p95: "1.8 s" };
+
+/* The 40-second demo, recorded live on 6 Nov 2026 (official repo: demo-video/: Playwright footage, ffmpeg, Remotion). No sound. */
+export const DEMO = {
+  src: "/assets/video/canary-demo.mp4",
+  poster: "/assets/video/canary-demo.jpg",
+  lede: "Recorded live on 6 Nov 2026, in Chromium with the extension: LeakyDash without and with Canary, the popup, and Canary Swap. 40 seconds, no sound. IP addresses that aren't Tor exits are hidden.",
+  chapters: [
+    { at: 3.5, label: "Without Canary", text: "On connect, LeakyDash's tracker and RPC provider get your address." },
+    { at: 11.5, label: "With Canary", text: "The privacy label from ENS on connect; the tracker gets nothing, the provider sees a Tor exit." },
+    { at: 19.5, label: "The popup", text: "Overview, Activity and Manifest for the same page." },
+    { at: 25.5, label: "Canary Swap", text: "A Uniswap v4 quote over eth_call, with no address in any request." },
+    { at: 33.5, label: "Stress run", text: "651 RPC calls, all through anon-rpc; 0 failed closed or sent direct." },
+  ],
+};
 
 export const SPONSORS = [
   { name: "ENS", href: "https://ens.domains", domain: "ens.domains", logo: "/assets/sponsors/ens.svg", w: 300, h: 94, variant: "ens" as const },

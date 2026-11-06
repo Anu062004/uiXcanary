@@ -2,6 +2,7 @@ import { Intro } from "@/components/Intro";
 import { Header } from "@/components/Header";
 import { Hero } from "@/components/Hero";
 import { Journal } from "@/components/Journal";
+import { Demo } from "@/components/Demo";
 import { Evidence } from "@/components/Evidence";
 import { Swap } from "@/components/Swap";
 import { GetCanary } from "@/components/GetCanary";
@@ -19,6 +20,7 @@ export default function Home() {
       <main>
         <Hero />
         <Journal />
+        <Demo />
         <Evidence />
         <Swap />
         <GetCanary />

@@ -9,7 +9,7 @@ export function Evidence() {
     <section className="sec sec--card" id="evidence" aria-labelledby="ev-h">
       <div className="container">
         <div className="sec-head rv">
-          <p className="idx">02 — Evidence</p>
+          <p className="idx">03 — Evidence</p>
           <div>
             <h2 id="ev-h">The <b>evidence</b></h2>
             <p className="lede">Recorded scans and runs, 6 Nov 2026. Not live data.</p>

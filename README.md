@@ -338,10 +338,10 @@ The site is a [Next.js](https://nextjs.org) (App Router) app written in React an
 app/layout.tsx           fonts (next/font), metadata and share preview, theme script
 app/page.tsx             the page: composes the sections below
 app/globals.css          design tokens (light and dark), layout and component styles
-components/              Header, Intro, Hero, Journal, Evidence, Swap, GetCanary, Sponsors, EndBand, Footer
+components/              Header, Intro, Hero, Journal, Demo, Evidence, Swap, GetCanary, Sponsors, EndBand, Footer
                          + Badge, Icon, Arrow, ExtensionLink, LeakCount, Reveal
 lib/content.ts           copy and data: nav, spheres, steps, evidence rows, stress-run figures, sponsors, links
-public/assets/           logo, favicon, images and sponsor logos
+public/assets/           logo, favicon, images, sponsor logos, and the demo video (video/)
 ```
 
 **Run it locally** (Node.js 20.9 or later):

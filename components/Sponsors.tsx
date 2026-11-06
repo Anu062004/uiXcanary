@@ -8,7 +8,7 @@ export function Sponsors() {
     <section className="sec" id="sponsors" aria-labelledby="sp-h">
       <div className="container">
         <div className="sec-head rv">
-          <p className="idx">05 — Sponsors</p>
+          <p className="idx">06 — Sponsors</p>
           <div>
             <h2 id="sp-h">Our <b>sponsors</b></h2>
             <p className="lede">We are grateful for the support of the organizations helping bring this experience to life.</p>

@@ -21,7 +21,7 @@ export function GetCanary() {
     <section className="sec sec--card" id="get" aria-labelledby="get-h">
       <div className="container">
         <div className="sec-head rv">
-          <p className="idx">04 — Get Canary</p>
+          <p className="idx">05 — Get Canary</p>
           <div><h2 id="get-h">Get <b>Canary</b></h2></div>
         </div>
         <Deck>
