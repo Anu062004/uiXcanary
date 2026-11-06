@@ -407,7 +407,7 @@ td.m { font: 500 14px/20px var(--f-mono); white-space: nowrap; }
 .post:hover [data-fx], .step:hover [data-fx], .ev-lead:hover [data-fx], .get .card:hover [data-fx] { --h: 1.04; }
 
 /* How Canary fixes it, desktop: pinned sequence (components/StepSequence.tsx) */
-.seq { display: none; position: relative; height: calc(var(--n) * 90vh); margin-top: 24px; }
+.seq { display: none; position: relative; height: calc(var(--n) * 130vh); margin-top: 32px; }
 .seq__sticky { position: sticky; top: 84px; height: calc(100vh - 108px); max-height: 760px; display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(32px, 5vw, 72px); align-items: center; }
 .seq__copy { display: flex; flex-direction: column; gap: 36px; min-width: 0; }
 .seq__nav { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; border-left: 1px solid var(--border); }
@@ -425,6 +425,8 @@ td.m { font: 500 14px/20px var(--f-mono); white-space: nowrap; }
 .seq__text p { margin: 0; max-width: 46ch; color: var(--text-2); font-size: 16px; line-height: 1.6; }
 .seq__text code { font: 500 13px/1 var(--f-mono); background: var(--subtle); padding: 2px 6px; border-radius: 4px; }
 .seq__text .facts { margin-top: 8px !important; }
+.seq__text .specs { margin: 4px 0 0; max-width: 46ch; }
+.seq__text .aside { font-size: 14px; color: var(--muted); }
 .seq__stage { position: relative; height: 100%; max-height: 560px; aspect-ratio: 4 / 3; justify-self: end; width: 100%; }
 .seq__fig {
   position: absolute; inset: 0; margin: 0; overflow: hidden; border-radius: 18px; background: var(--subtle);
@@ -440,5 +442,5 @@ td.m { font: 500 14px/20px var(--f-mono); white-space: nowrap; }
 .seq__fig figcaption b { color: #0A6B73; font-weight: 500; }
 @media (min-width: 861px) and (prefers-reduced-motion: no-preference) {
   .seq { display: block; }
-  .seq + .steps { display: none; }
+  .seq ~ .lead, .seq ~ .steps-head, .seq ~ .steps { display: none; }
 }

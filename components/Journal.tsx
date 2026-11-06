@@ -2,7 +2,8 @@ import Image from "next/image";
 import { rich } from "./rich";
 import { StepFacts } from "./StepFacts";
 import { StepSequence } from "./StepSequence";
-import { STEPS } from "@/lib/content";
+import { ProblemText } from "./ProblemText";
+import { PROBLEM, STEPS } from "@/lib/content";
 
 export function Journal() {
   return (
@@ -13,26 +14,16 @@ export function Journal() {
           <div><h2 id="j-h">How it <b>works</b></h2></div>
         </div>
 
+        <StepSequence />
+        {/* phones and reduced motion: the problem card, then the steps as a card list */}
         <article className="card lead post rv" style={{ "--d": 1 } as React.CSSProperties}>
           <figure className="fig" data-fx>
-            <Image src="/assets/images/note-1.jpg" alt="A frosted-glass teal bird perched on a glowing fibre-optic cable in a dark server corridor, with a thin red light leaking through a gap" fill sizes="(max-width: 860px) 100vw, 700px" />
+            <Image src={PROBLEM.image} alt={PROBLEM.alt} fill sizes="(max-width: 860px) 100vw, 700px" />
           </figure>
-          <div className="body">
-            <p className="kicker"><b>01</b><span>The problem</span></p>
-            <h3>Your dapp talks to strangers.</h3>
-            <p>Dapps send reads straight from your browser to their own RPC provider, and often your address to analytics too. One <code>eth_getBalance</code> call hands over three things:</p>
-            <dl className="specs leaks">
-              <div><dt>Address</dt><dd>in the call’s parameters</dd></div>
-              <div><dt>IP</dt><dd>in the connection</dd></div>
-              <div><dt>App</dt><dd>in the provider URL or project key</dd></div>
-            </dl>
-            <p className="aside">Agents leak the same way, through their reads, API calls and LLM prompts.</p>
-          </div>
+          <div className="body"><ProblemText /></div>
         </article>
 
         <div className="steps-head rv"><p className="kicker"><b>02–05</b><span>How Canary fixes it</span></p></div>
-        <StepSequence />
-        {/* phones and reduced motion: the same steps as a card list */}
         <div className="steps">
           {STEPS.map((s, i) => (
             <article key={s.num} className="card step rv" style={{ "--d": i + 1 } as React.CSSProperties}>

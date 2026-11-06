@@ -42,6 +42,22 @@ export const ORBS: Orb[] = [
   { key: "c", kicker: "Measure", title: "Measured coverage", description: "Every request counted, gaps included.", status: "ni", depth: 22, speed: -0.42, spread: 0.2 },
 ];
 
+/* 01 · the problem: the lead card on phones, the first slide of the sequence on desktop */
+export const PROBLEM = {
+  num: "01",
+  kind: "The problem",
+  image: "/assets/images/note-1.jpg",
+  alt: "A frosted-glass teal bird perched on a glowing fibre-optic cable in a dark server corridor, with a thin red light leaking through a gap",
+  title: "Your dapp talks to strangers.",
+  body: "Dapps send reads straight from your browser to their own RPC provider, and often your address to analytics too. One `eth_getBalance` call hands over three things:",
+  leaks: [
+    { what: "Address", where: "in the call’s parameters" },
+    { what: "IP", where: "in the connection" },
+    { what: "App", where: "in the provider URL or project key" },
+  ],
+  aside: "Agents leak the same way, through their reads, API calls and LLM prompts.",
+};
+
 export type Step = {
   num: string;
   kind: string;
