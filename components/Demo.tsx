@@ -38,10 +38,7 @@ export function Demo() {
       <div className="container">
         <div className="sec-head rv">
           <p className="idx">02 — Demo</p>
-          <div>
-            <h2 id="demo-h">See it <b>work</b></h2>
-            <p className="lede">{DEMO.lede}</p>
-          </div>
+          <div><h2 id="demo-h">See it <b>work</b></h2></div>
         </div>
         <figure className="card demo rv">
           <video ref={video} src={DEMO.src} poster={DEMO.poster} width={1920} height={1080} muted playsInline loop controls preload="metadata"

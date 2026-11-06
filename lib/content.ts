@@ -140,7 +140,6 @@ export const STRESS = { calls: 651, checked: 397, requests: 269, mean: "1.4 s", 
 export const DEMO = {
   src: "/assets/video/canary-demo.mp4",
   poster: "/assets/video/canary-demo.jpg",
-  lede: "Recorded live on 6 Nov 2026, in Chromium with the extension: LeakyDash without and with Canary, the popup, and Canary Swap. 40 seconds, no sound. IP addresses that aren't Tor exits are hidden.",
   chapters: [
     { at: 3.5, label: "Without Canary", text: "On connect, LeakyDash's tracker and RPC provider get your address." },
     { at: 11.5, label: "With Canary", text: "The privacy label from ENS on connect; the tracker gets nothing, the provider sees a Tor exit." },
