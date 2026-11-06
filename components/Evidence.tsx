@@ -17,7 +17,7 @@ export function Evidence() {
         </div>
         <div className="ev">
           <article className="card ev-lead rv">
-            <figure className="ev-fig">
+            <figure className="ev-fig" data-fx>
               <Image src="/assets/images/evidence.jpg" alt="Rust-red glass beads stopped against a frosted teal glass pane, with clean empty space beyond it" fill sizes="(max-width: 860px) 100vw, 700px" />
             </figure>
             <div className="stat">

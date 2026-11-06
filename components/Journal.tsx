@@ -21,7 +21,7 @@ export function Journal() {
         </div>
 
         <article className="card lead post rv" style={{ "--d": 1 } as React.CSSProperties}>
-          <figure className="fig">
+          <figure className="fig" data-fx>
             <Image src="/assets/images/note-1.jpg" alt="A frosted-glass teal bird perched on a glowing fibre-optic cable in a dark server corridor, with a thin red light leaking through a gap" fill sizes="(max-width: 860px) 100vw, 700px" />
           </figure>
           <div className="body">
@@ -41,7 +41,7 @@ export function Journal() {
         <div className="steps">
           {STEPS.map((s, i) => (
             <article key={s.num} className="card step rv" style={{ "--d": i + 1 } as React.CSSProperties}>
-              <figure className="fig step__fig">
+              <figure className="fig step__fig" data-fx>
                 <Image src={s.image} alt={s.alt} fill sizes="(max-width: 860px) 100vw, 580px" />
               </figure>
               <div className="step__body">

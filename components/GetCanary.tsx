@@ -17,7 +17,7 @@ export function GetCanary() {
         </div>
         <div className="get">
           <div className="card rv" style={{ "--d": 1 } as React.CSSProperties}>
-            <figure className="get-fig">
+            <figure className="get-fig" data-fx>
               <Image src="/assets/images/get-extension.jpg" alt="A frosted teal glass shield in front of a glass browser window: a teal light line passes through while small red particles stop against the shield" fill sizes="(max-width: 860px) 100vw, 580px" />
             </figure>
             <div className="top"><span className="tile"><span className="bird" aria-hidden="true" /></span><h3>Browser extension</h3></div>
@@ -35,7 +35,7 @@ export function GetCanary() {
           </div>
 
           <div className="card rv" style={{ "--d": 2 } as React.CSSProperties}>
-            <figure className="get-fig">
+            <figure className="get-fig" data-fx>
               <Image src="/assets/images/get-sdk.jpg" alt="A smiling white robot at a desk whose cables all run into one glowing teal gateway cube, leaving as a single cable" fill sizes="(max-width: 860px) 100vw, 580px" />
             </figure>
             <div className="top"><span className="tile"><Icon name="code" size={24} /></span><h3>Agent SDK and gateway</h3></div>

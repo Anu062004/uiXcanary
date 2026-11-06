@@ -9,6 +9,7 @@ import { Sponsors } from "@/components/Sponsors";
 import { EndBand } from "@/components/EndBand";
 import { Footer } from "@/components/Footer";
 import { Reveal } from "@/components/Reveal";
+import { ScrollFX } from "@/components/ScrollFX";
 
 export default function Home() {
   return (
@@ -26,6 +27,7 @@ export default function Home() {
       </main>
       <Footer />
       <Reveal />
+      <ScrollFX />
     </>
   );
 }

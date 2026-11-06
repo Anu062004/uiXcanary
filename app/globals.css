@@ -2,6 +2,7 @@
 /* Layout: centred 1184px container on a clean grid. Full-bleed hero of three glossy spheres, then how it works, evidence, get Canary, sponsors, closing band. */
 @property --hx { syntax: "<percentage>"; inherits: true; initial-value: 32%; }
 @property --hy { syntax: "<percentage>"; inherits: true; initial-value: 26%; }
+@property --h { syntax: "<number>"; inherits: true; initial-value: 1; }
 :root {
   /* brand */
   --teal: #0A6B73; --teal-bright: #00C9B7; --navy: #102D38; --navy-deep: #081B24; --cyan: #37C6CF;
@@ -213,7 +214,6 @@ h4 { margin: 0; font: 500 20px/1.2 var(--f-display); text-wrap: balance; }
 .step__body .kicker b { font-size: 12px; }
 .step__body p { font-size: 15px; line-height: 1.55; }
 .facts { margin-top: auto !important; padding-top: 8px; display: flex; flex-wrap: wrap; gap: 6px; }
-.step:hover .fig img { transform: scale(1.03); }
 
 /* evidence */
 .ev { margin-top: 40px; display: grid; gap: 24px; }
@@ -234,8 +234,7 @@ td.m { font: 500 14px/20px var(--f-mono); white-space: nowrap; }
 .note { margin: 14px 0 0; font: 400 12px/18px var(--f-mono); color: var(--muted); }
 .stat { padding: clamp(24px, 3vw, 44px); display: flex; flex-direction: column; justify-content: center; gap: 12px; min-width: 0; }
 .ev-fig { position: relative; margin: 0; min-height: 100%; aspect-ratio: 16 / 9; overflow: hidden; border-right: 1px solid var(--border); background: var(--subtle); }
-.ev-fig img { position: relative; display: block; width: 100%; height: 100%; object-fit: cover; object-position: 50% 60%; transition: transform .6s cubic-bezier(.2,.7,.2,1); }
-.ev-lead:hover .ev-fig img { transform: scale(1.03); }
+.ev-fig img { position: relative; display: block; width: 100%; height: 100%; object-fit: cover; object-position: 50% 60%; }
 .stat .big { margin: 4px 0 0; font: 300 clamp(60px, 7vw, 112px)/1 var(--f-display); letter-spacing: -.02em; font-variant-numeric: tabular-nums; white-space: nowrap; }
 .stat .big span { color: var(--ok); }
 .stat p { margin: 0; max-width: 34ch; color: var(--text-2); font-size: 16px; }
@@ -249,8 +248,7 @@ td.m { font: 500 14px/20px var(--f-mono); white-space: nowrap; }
 .get { margin-top: 40px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
 .get .card { --gp: clamp(20px, 3vw, 32px); padding: var(--gp); display: flex; flex-direction: column; gap: 16px; min-width: 0; overflow: hidden; }
 .get-fig { position: relative; margin: calc(var(--gp) * -1) calc(var(--gp) * -1) 8px; aspect-ratio: 16 / 9; overflow: hidden; background: var(--subtle); border-bottom: 1px solid var(--border); }
-.get-fig img { position: relative; display: block; width: 100%; height: 100%; object-fit: cover; transition: transform .6s cubic-bezier(.2,.7,.2,1); }
-.get .card:hover .get-fig img { transform: scale(1.03); }
+.get-fig img { position: relative; display: block; width: 100%; height: 100%; object-fit: cover; }
 .get .top { display: flex; align-items: center; gap: 12px; }
 .get .top .tile { display: grid; place-items: center; width: 44px; height: 44px; border-radius: 12px; background: var(--subtle); color: var(--accent); }
 .get .top .tile .bird { width: 28px; height: 28px; }
@@ -346,8 +344,7 @@ td.m { font: 500 14px/20px var(--f-mono); white-space: nowrap; }
 .get-btn--dark { background: #00AFA8; color: #081B24; }
 .get-btn--dark:hover { background: #19C8BE; }
 /* note images */
-.fig img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform .6s cubic-bezier(.2,.7,.2,1); }
-.post:hover .fig img { transform: scale(1.03); }
+.fig img { display: block; width: 100%; height: 100%; object-fit: cover; }
 @media (max-width: 1023px) {
   .spons { gap: 16px; }
 }
@@ -396,3 +393,15 @@ td.m { font: 500 14px/20px var(--f-mono); white-space: nowrap; }
   .step, .get .card, .spon { transition: transform .35s cubic-bezier(.2,.7,.2,1), box-shadow .35s ease, border-color .2s; }
   .step:hover, .get .card:hover, .spon:hover { transform: translateY(-4px); box-shadow: 0 18px 40px -22px rgba(16,45,56,.35); }
 }
+
+/* scroll-linked image reveal (components/ScrollFX.tsx sets --pe and --q on each [data-fx] frame) */
+[data-fx-on] [data-fx] {
+  clip-path: inset(calc((1 - var(--pe, 1)) * 20%) calc((1 - var(--pe, 1)) * 26%) round calc((1 - var(--pe, 1)) * 28px));
+}
+[data-fx-on] [data-fx] img {
+  transform: translate3d(0, calc(var(--q, 0) * 4%), 0) scale(calc((1.08 + (1 - var(--pe, 1)) * .45) * var(--h)));
+  opacity: calc(.1 + .9 * var(--pe, 1));
+  will-change: transform;
+  transition: --h .6s cubic-bezier(.2,.7,.2,1);
+}
+.post:hover [data-fx], .step:hover [data-fx], .ev-lead:hover [data-fx], .get .card:hover [data-fx] { --h: 1.04; }
