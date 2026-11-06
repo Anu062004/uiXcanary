@@ -295,29 +295,32 @@ Summarised from the official README.
 
 ## About this website
 
-This repo is a single static page, with no build step and no dependencies.
+The site is a [Next.js](https://nextjs.org) (App Router) app written in React and TypeScript. The page is prerendered to static HTML at build time; the interactive parts hydrate as client components.
 
 ```
-index.html               the landing page (HTML, CSS and JS in one file)
-assets/bird.png          Canary bird logo
-assets/favicon.png       browser-tab icon
-assets/images/note-*.jpg illustrations for the five "How it works" notes
-assets/sponsors/*.svg     official ENS, Uniswap and Ethereum logos, unmodified
+app/layout.tsx           fonts (next/font), metadata and share preview, theme script
+app/page.tsx             the page: composes the sections below
+app/globals.css          design tokens (light and dark), layout and component styles
+components/              Header, Intro, Hero, Journal, Evidence, GetCanary, Sponsors, EndBand, Footer
+                         + Badge, Icon, Arrow, ExtensionLink, LeakCount, Reveal
+lib/content.ts           copy and data: nav, spheres, steps, evidence rows, sponsors, links
+public/assets/           logo, favicon, images and sponsor logos
 ```
 
-**Run it locally:**
+**Run it locally** (Node.js 20.9 or later):
 
 ```sh
-python3 -m http.server 8765    # then open http://127.0.0.1:8765
+npm install
+npm run dev        # http://localhost:3000
+npm run build && npm start   # production build
 ```
 
-Or just open `index.html` in a browser.
-
-**Deploy:** the site is on Vercel as the `uixcanary` project, and every push to `main` redeploys it to **https://uixcanary.vercel.app**. To deploy by hand: `vercel deploy --prod`.
+**Deploy:** the site is on Vercel as the `uixcanary` project (`vercel.json` sets the framework to Next.js), and every push to `main` redeploys it to **https://uixcanary.vercel.app**. To deploy by hand: `vercel deploy --prod`.
 
 **Editing:**
-- **Chrome Web Store link:** set `EXTENSION_URL` near the bottom of `index.html`, and every "Get extension" button will point to it.
-- **Evidence table:** the rows are defined in the `rows` array in the same script.
+- **Chrome Web Store link:** set `EXTENSION_URL` in `lib/content.ts`, and every "Get extension" button will point to it.
+- **Copy and data:** spheres, steps, evidence rows and sponsors are in `lib/content.ts`.
+- **Share preview:** add `public/assets/og.jpg` (1200 × 630); `app/layout.tsx` already references it.
 - **Sponsors:** the section lists the ETHGlobal Mumbai 2026 prize sponsors ENS, the Uniswap Foundation and the Ethereum Foundation ([source](https://ethglobal.com/events/mumbai/prizes)). They sponsor the event, not Canary. The logos are the organizations' own files, unmodified: [ENS](https://github.com/ensdomains/ens-app-v3/blob/main/src/assets/ENSFull.svg), [Uniswap](https://github.com/Uniswap/brand-assets/blob/main/Uniswap%20Brand%20Assets/Uniswap_horizontallogo_pink.svg) and [Ethereum](https://ethereum.org/assets/) (`ethereum-logo-landscape-purple.svg`). All trademarks belong to their owners.
 
 ## Credits and license
