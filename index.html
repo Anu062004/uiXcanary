@@ -237,17 +237,25 @@ h4 { margin: 0; font: 500 20px/1.2 var(--f-display); text-wrap: balance; }
 .lead .body { padding: clamp(24px, 3vw, 40px); display: flex; flex-direction: column; justify-content: center; gap: 12px; min-width: 0; }
 .kicker { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; font: 500 12px/16px var(--f-mono); letter-spacing: .06em; text-transform: uppercase; color: var(--text-2); }
 .kicker b { color: var(--accent); font-weight: 500; }
-.post p { margin: 0; color: var(--text-2); }
-.post details { margin-top: 4px; border-top: 1px solid var(--border); }
-.post summary { list-style: none; cursor: pointer; display: flex; justify-content: space-between; align-items: center; min-height: 44px; font: 600 14px/20px var(--f-body); color: var(--text); }
-.post summary::-webkit-details-marker { display: none; }
-.post summary .ic { color: var(--accent); transition: transform .2s; }
-.post details[open] summary .ic { transform: rotate(45deg); }
-.post details p { margin: 0 0 12px; font-size: 15px; }
-.post code, .get code { font: 500 13px/1 var(--f-mono); background: var(--subtle); padding: 2px 6px; border-radius: 4px; overflow-wrap: anywhere; }
-.posts { margin-top: 24px; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px; }
-.posts .post { display: flex; flex-direction: column; overflow: hidden; min-width: 0; }
-.posts .post .body { padding: 20px; display: flex; flex-direction: column; gap: 10px; flex: 1; }
+.post p, .step p { margin: 0; color: var(--text-2); }
+.post code, .step code, .get code { font: 500 13px/1 var(--f-mono); background: var(--subtle); padding: 2px 6px; border-radius: 4px; overflow-wrap: anywhere; }
+.lead .body p { font-size: 16px; }
+.leaks { margin: 4px 0 0; }
+.leaks > div { grid-template-columns: 96px minmax(0, 1fr); padding: 10px 0; }
+.specs.leaks dt { color: var(--exp); }
+.lead .fig { min-height: 100%; aspect-ratio: auto !important; }
+.lead .fig img { position: absolute; inset: 0; }
+.lead .aside { font-size: 14px; color: var(--muted); }
+.steps-head { margin-top: 56px; padding-top: 16px; border-top: 1px solid var(--border); }
+.steps { margin-top: 20px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+.step { display: flex; flex-direction: column; overflow: hidden; min-width: 0; }
+.step__fig { aspect-ratio: 16 / 9; border-bottom: 1px solid var(--border); }
+.step__fig img { position: absolute; inset: 0; }
+.step__body { flex: 1; padding: clamp(20px, 2.4vw, 28px); display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+.step__body .kicker b { font-size: 12px; }
+.step__body p { font-size: 15px; line-height: 1.55; }
+.facts { margin-top: auto !important; padding-top: 8px; display: flex; flex-wrap: wrap; gap: 6px; }
+.step:hover .fig img { transform: scale(1.03); }
 
 /* evidence */
 .ev { margin-top: 40px; display: grid; gap: 24px; }
@@ -389,7 +397,6 @@ td.m { font: 500 14px/20px var(--f-mono); white-space: nowrap; }
 .fig img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform .6s cubic-bezier(.2,.7,.2,1); }
 .post:hover .fig img { transform: scale(1.03); }
 @media (max-width: 1023px) {
-  .posts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .spons { gap: 16px; }
 }
 @media (max-width: 860px) {
@@ -413,8 +420,9 @@ td.m { font: 500 14px/20px var(--f-mono); white-space: nowrap; }
   .foot__bar { align-items: center; }
   .foot__fine { order: 3; flex-basis: 100%; }
   .foot__up { margin-left: auto; }
-  .posts { grid-template-columns: minmax(0, 1fr); }
   .ev-fig { border-right: 0; border-bottom: 1px solid var(--border); }
+  .lead .fig { aspect-ratio: 16 / 10 !important; min-height: 0; }
+  .steps { grid-template-columns: minmax(0, 1fr); }
   .spons { grid-template-columns: minmax(0, 1fr); max-width: 420px; }
   .spon__plate { aspect-ratio: 5 / 2; }
   .end::before { background: linear-gradient(180deg, rgba(16,45,56,.55), #102D38 60%) !important; }
@@ -523,84 +531,56 @@ td.m { font: 500 14px/20px var(--f-mono); white-space: nowrap; }
     </div>
 
     <article class="card lead post rv" style="--d:1">
-      <figure class="fig" style="aspect-ratio: 16 / 10">
-          <img src="assets/images/note-1.jpg" alt="A frosted-glass teal bird perched on a glowing fibre-optic cable in a dark server corridor, with a thin red light leaking through a gap" width="1448" height="1086" decoding="async">
-        </figure>
+      <figure class="fig" style="aspect-ratio: 16 / 10"><img src="assets/images/note-1.jpg" alt="A frosted-glass teal bird perched on a glowing fibre-optic cable in a dark server corridor, with a thin red light leaking through a gap" width="1448" height="1086" decoding="async"></figure>
       <div class="body">
-        <div class="kicker"><b>Note 01</b><span>The problem</span><span>3 min read</span></div>
+        <p class="kicker"><b>01</b><span>The problem</span></p>
         <h3>Your dapp talks to strangers.</h3>
-        <p>One balance check can leak your IP, wallet and app.</p>
-        <details>
-          <summary>Read the note<svg class="ic ic--20" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/><path d="M12 5v14"/></svg></summary>
-          <p>A dapp can make blockchain reads directly from the page with its own RPC provider. An <code>eth_getBalance</code> call carries your address in its parameters, your IP in the connection, and the app’s identity in a provider URL or project key.</p>
-          <p>Analytics and application APIs can receive the address too. Agents have the same problem: their reads, API calls and LLM prompts can reveal the wallets they operate.</p>
-        </details>
+        <p>Dapps send reads straight from your browser to their own RPC provider, and often your address to analytics too. One <code>eth_getBalance</code> call hands over three things:</p>
+        <dl class="specs leaks">
+          <div><dt>Address</dt><dd>in the call’s parameters</dd></div>
+          <div><dt>IP</dt><dd>in the connection</dd></div>
+          <div><dt>App</dt><dd>in the provider URL or project key</dd></div>
+        </dl>
+        <p class="aside">Agents leak the same way, through their reads, API calls and LLM prompts.</p>
       </div>
     </article>
 
-    <div class="posts">
-      <article class="card post rv" style="--d:1">
-        <figure class="fig" style="aspect-ratio: 4 / 3">
-          <img src="assets/images/note-2.jpg" alt="Three translucent glass rings in a row with a single teal light beam passing through all of them" width="1448" height="1086" loading="lazy" decoding="async">
-        </figure>
-        <div class="body">
-          <div class="kicker"><b>Note 02</b><span>Enforce</span></div>
+    <div class="steps-head rv"><p class="kicker"><b>02–05</b><span>How Canary fixes it</span></p></div>
+    <div class="steps">
+      <article class="card step rv" style="--d:1">
+        <figure class="fig step__fig"><img src="assets/images/note-2.jpg" alt="Three translucent glass rings in a row with a single teal light beam passing through all of them" width="1448" height="1086" loading="lazy" decoding="async"></figure>
+        <div class="step__body">
+          <p class="kicker"><b>02</b><span>Enforce</span></p>
           <h4>Reads go over Tor.</h4>
-          <p>The RPC sees an exit relay, not you.</p>
-          <details>
-            <summary>Read the note<svg class="ic ic--20" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/><path d="M12 5v14"/></svg></summary>
-            <p>For standard reads on a supported chain, Canary sends the call to its own read endpoint through anon-rpc and tor-js. The dapp’s provider never receives that read.</p>
-            <p>Non-standard methods are forwarded to the original URL over the same path: your IP is hidden, but the provider URL still identifies the app, so these count as <em>IP only</em>.</p>
-            <p>Each watched wallet gets its own circuit key, <code>addr:&lt;address&gt;</code>. Reads batch in a 15 ms window, and a stalled read retries on a fresh circuit after 3 seconds.</p>
-          </details>
+          <p>Standard reads are answered from Canary’s own endpoint through anon-rpc and tor-js. The dapp’s provider never sees them, and the endpoint sees an exit relay, not you.</p>
+          <p class="facts"><span class="chip">circuit per wallet</span><span class="chip">15 ms batching</span><span class="chip">3 s retry</span></p>
         </div>
       </article>
-
-      <article class="card post rv" style="--d:2">
-        <figure class="fig" style="aspect-ratio: 4 / 3">
-          <img src="assets/images/note-3.jpg" alt="A white paper strip stopped against a thick frosted blue glass pane" width="1448" height="1086" loading="lazy" decoding="async">
-        </figure>
-        <div class="body">
-          <div class="kicker"><b>Note 03</b><span>Block</span></div>
+      <article class="card step rv" style="--d:2">
+        <figure class="fig step__fig"><img src="assets/images/note-3.jpg" alt="A white paper strip stopped against a thick frosted blue glass pane" width="1448" height="1086" loading="lazy" decoding="async"></figure>
+        <div class="step__body">
+          <p class="kicker"><b>03</b><span>Block</span></p>
           <h4>Leaks stop at the edge.</h4>
-          <p>Trackers carrying your wallet are blocked.</p>
-          <details>
-            <summary>Read the note<svg class="ic ic--20" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/><path d="M12 5v14"/></svg></summary>
-            <p>Canary wraps the page’s fetch, XHR and WebSocket at load. Requests to third parties that contain a watched address are refused; browser rules also catch tracking pixels.</p>
-            <p>Matching is exact: plain, checksummed, padded and supported base64 forms. Hashed or encrypted addresses can slip past, and bodies Canary can’t read are labelled <em>Not inspected</em>.</p>
-          </details>
+          <p>Canary wraps fetch, XHR and WebSocket. Third-party requests that carry your address are refused, and browser rules catch tracking pixels.</p>
+          <p class="facts"><span class="chip">exact matching</span><span class="chip">checksummed · padded · base64</span></p>
         </div>
       </article>
-
-      <article class="card post rv" style="--d:3">
-        <figure class="fig" style="aspect-ratio: 4 / 3">
-          <img src="assets/images/note-4.jpg" alt="Five frosted glass blocks of different heights: teal, amber, blue, grey and rust" width="1448" height="1086" loading="lazy" decoding="async">
-        </figure>
-        <div class="body">
-          <div class="kicker"><b>Note 04</b><span>Measure</span></div>
+      <article class="card step rv" style="--d:3">
+        <figure class="fig step__fig"><img src="assets/images/note-4.jpg" alt="Five frosted glass blocks of different heights: teal, amber, blue, grey and rust" width="1448" height="1086" loading="lazy" decoding="async"></figure>
+        <div class="step__body">
+          <p class="kicker"><b>04</b><span>Measure</span></p>
           <h4>Every request counted.</h4>
-          <p>Gaps included, never hidden.</p>
-          <details>
-            <summary>Read the note<svg class="ic ic--20" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/><path d="M12 5v14"/></svg></summary>
-            <p>Categories include Protected, IP only, Blocked, Detected, Backend, Not inspected, Failed closed, Direct and Local node. <em>Not inspected</em> is never counted as protected.</p>
-            <p>If the private route fails, the request returns an error and counts as <em>Failed closed</em>, unless you turn on direct fallback for that site. A zero-leak result applies only to the channels Canary inspected and the flow you exercised.</p>
-          </details>
+          <p>Each request gets a label. <em>Not inspected</em> never counts as protected, and if the private route fails, the request fails closed.</p>
+          <p class="facts"><span class="badge b-ok"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg>Protected</span><span class="badge b-part"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>IP only</span><span class="badge b-blk"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m4.9 4.9 14.2 14.2"/></svg>Blocked</span><span class="badge b-ni"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M10.733 5.076a10.744 10.744 0 0 1 11.205 6.575 1 1 0 0 1 0 .696 10.747 10.747 0 0 1-1.444 2.49"/><path d="M14.084 14.158a3 3 0 0 1-4.242-4.242"/><path d="M17.479 17.499a10.75 10.75 0 0 1-15.417-5.151 1 1 0 0 1 0-.696 10.75 10.75 0 0 1 4.446-5.143"/><path d="m2 2 20 20"/></svg>Not inspected</span></p>
         </div>
       </article>
-
-      <article class="card post rv" style="--d:4">
-        <figure class="fig" style="aspect-ratio: 4 / 3">
-          <img src="assets/images/note-5.jpg" alt="A white robotic hand holding a blank card partly covered by a teal label" width="1448" height="1086" loading="lazy" decoding="async">
-        </figure>
-        <div class="body">
-          <div class="kicker"><b>Note 05</b><span>Agents</span></div>
+      <article class="card step rv" style="--d:4">
+        <figure class="fig step__fig"><img src="assets/images/note-5.jpg" alt="A white robotic hand holding a blank card partly covered by a teal label" width="1448" height="1086" loading="lazy" decoding="async"></figure>
+        <div class="step__body">
+          <p class="kicker"><b>05</b><span>Agents</span></p>
           <h4>Agents follow a policy.</h4>
-          <p>Wallets become aliases before the LLM.</p>
-          <details>
-            <summary>Read the note<svg class="ic ic--20" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/><path d="M12 5v14"/></svg></summary>
-            <p>The local gateway exposes a JSON-RPC endpoint and an HTTP proxy. Its policy comes from the agent’s <code>privacy.manifest</code> ENS record; undeclared hosts are blocked by default.</p>
-            <p>The SDK plugs into viem or ethers. <code>llmFetch</code> swaps wallets for <code>WALLET_1</code> and the agent’s name for <code>AGENT_NAME</code>, keeps amounts unchanged, and restores aliases before tools run.</p>
-          </details>
+          <p>A local gateway enforces the agent’s ENS <code>privacy.manifest</code> and blocks undeclared hosts. <code>llmFetch</code> turns wallets into <code>WALLET_1</code> before a prompt leaves.</p>
+          <p class="facts"><span class="chip">viem</span><span class="chip">ethers</span><span class="chip">any language</span></p>
         </div>
       </article>
     </div>
