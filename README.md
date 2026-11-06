@@ -302,6 +302,7 @@ index.html               the landing page (HTML, CSS and JS in one file)
 assets/bird.png          Canary bird logo
 assets/favicon.png       browser-tab icon
 assets/images/note-*.jpg illustrations for the five "How it works" notes
+assets/sponsors/*.svg     official ENS, Uniswap and Ethereum logos, unmodified
 ```
 
 **Run it locally:**
@@ -317,7 +318,7 @@ Or just open `index.html` in a browser.
 **Editing:**
 - **Chrome Web Store link:** set `EXTENSION_URL` near the bottom of `index.html`, and every "Get extension" button will point to it.
 - **Evidence table:** the rows are defined in the `rows` array in the same script.
-- **Sponsor logos:** the six sponsor boxes are still placeholders.
+- **Sponsors:** the section lists the ETHGlobal Mumbai 2026 prize sponsors ENS, the Uniswap Foundation and the Ethereum Foundation ([source](https://ethglobal.com/events/mumbai/prizes)). They sponsor the event, not Canary. The logos are the organizations' own files, unmodified: [ENS](https://github.com/ensdomains/ens-app-v3/blob/main/src/assets/ENSFull.svg), [Uniswap](https://github.com/Uniswap/brand-assets/blob/main/Uniswap%20Brand%20Assets/Uniswap_horizontallogo_pink.svg) and [Ethereum](https://ethereum.org/assets/) (`ethereum-logo-landscape-purple.svg`). All trademarks belong to their owners.
 
 ## Credits and license
 

@@ -265,9 +265,23 @@ td.m { font: 500 14px/20px var(--f-mono); white-space: nowrap; }
 .row-wrap { display: flex; flex-wrap: wrap; gap: 8px; }
 
 /* sponsors */
-.spons { margin-top: 32px; display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 16px; }
-.spons > div { aspect-ratio: 3 / 2; display: grid; place-items: center; padding: 12px; border-radius: 12px; border: 1px solid var(--border); background: var(--bg); }
-.slot-logo { display: grid; place-items: center; align-content: center; gap: 6px; width: 100%; height: 100%; border: 1.5px dashed var(--border); border-radius: 8px; color: var(--muted); font: 500 11px/14px var(--f-mono); letter-spacing: .04em; text-transform: uppercase; text-align: center; }
+.spons-note { margin: 8px 0 0; font: 400 12px/18px var(--f-mono); color: var(--muted); }
+.spons { margin: 40px 0 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
+.spon { display: flex; flex-direction: column; height: 100%; border: 1px solid var(--border); border-radius: 16px; background: var(--bg); color: var(--text); text-decoration: none; overflow: hidden; transition: border-color .2s, box-shadow .2s; }
+.spon:hover { border-color: var(--accent); box-shadow: var(--shadow-card); }
+/* logos always sit on white, so each keeps its official colours in both themes */
+.spon__plate { display: grid; place-items: center; aspect-ratio: 16 / 9; padding: 24px; background: #FFFFFF; border-bottom: 1px solid var(--border); }
+.spon__logo { display: block; height: clamp(34px, 3.4vw, 46px); width: auto; max-width: 100%; }
+.spon__logo--ens { height: clamp(36px, 3.6vw, 48px); }
+/* ethereum.svg draws its artwork in a 1080 × 270 box inside a 1920 × 1080 canvas: show just that box, file untouched */
+.spon__crop { position: relative; display: block; height: clamp(34px, 3.4vw, 46px); aspect-ratio: 4 / 1; max-width: 100%; overflow: hidden; }
+.spon__crop img { position: absolute; left: -38.889%; top: -150%; width: 177.778%; height: auto; max-width: none; }
+.spon__meta { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 16px 20px; }
+.spon__name { font: 500 17px/22px var(--f-display); letter-spacing: .01em; }
+.spon__url { display: inline-flex; align-items: center; gap: 4px; font: 500 12px/16px var(--f-mono); color: var(--text-2); white-space: nowrap; }
+.spon__url .ic { width: 14px; height: 14px; transition: transform .18s; }
+.spon:hover .spon__url { color: var(--accent); }
+.spon:hover .spon__url .ic { transform: translate(2px, -2px); }
 
 /* closing band */
 .end { position: relative; overflow: hidden; background: #102D38; color: #F5FAFC; }
@@ -332,7 +346,7 @@ td.m { font: 500 14px/20px var(--f-mono); white-space: nowrap; }
 .post:hover .fig img { transform: scale(1.03); }
 @media (max-width: 1023px) {
   .posts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .spons { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .spons { gap: 16px; }
   .ev { grid-template-columns: minmax(0, 1fr); }
 }
 @media (max-width: 860px) {
@@ -359,7 +373,8 @@ td.m { font: 500 14px/20px var(--f-mono); white-space: nowrap; }
   .foot__fine { order: 3; flex-basis: 100%; }
   .foot__up { margin-left: auto; }
   .posts { grid-template-columns: minmax(0, 1fr); }
-  .spons { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .spons { grid-template-columns: minmax(0, 1fr); max-width: 420px; }
+  .spon__plate { aspect-ratio: 5 / 2; }
   .end::before { background: linear-gradient(180deg, rgba(16,45,56,.55), #102D38 60%) !important; }
   .end__ball { right: -30vw; top: 20%; width: 90vw; }
 }
@@ -624,11 +639,34 @@ td.m { font: 500 14px/20px var(--f-mono); white-space: nowrap; }
       <p class="idx">04 — Sponsors</p>
       <div>
         <h2 id="sp-h">Our <b>sponsors</b></h2>
-        <p class="lede">Built at ETHGlobal Mumbai 2026.</p>
+        <p class="lede">We are grateful for the support of the organizations helping bring this experience to life.</p>
+        <p class="spons-note">Prize sponsors of ETHGlobal Mumbai 2026, where Canary was built.</p>
       </div>
     </div>
-    <!-- SLOTS: replace each .slot-logo with <img src="logo.svg" alt="Sponsor name"> -->
-    <div class="spons rv" style="--d:1" id="spons"></div>
+    <!-- Official logos, unmodified: ENS (ensdomains/ens-app-v3), Uniswap (Uniswap/brand-assets), Ethereum (ethereum.org/assets). -->
+    <ul class="spons rv" style="--d:1">
+      <li>
+        <a class="spon" href="https://ens.domains" target="_blank" rel="noopener">
+          <span class="spon__plate"><img class="spon__logo spon__logo--ens" src="assets/sponsors/ens.svg" alt="" width="300" height="94"></span>
+          <span class="spon__meta"><span class="spon__name">ENS</span><span class="spon__url">ens.domains<svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></span></span>
+          <span class="sr-only">(opens in a new tab)</span>
+        </a>
+      </li>
+      <li>
+        <a class="spon" href="https://uniswap.org" target="_blank" rel="noopener">
+          <span class="spon__plate"><img class="spon__logo" src="assets/sponsors/uniswap.svg" alt="" width="1001" height="251"></span>
+          <span class="spon__meta"><span class="spon__name">Uniswap Foundation</span><span class="spon__url">uniswap.org<svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></span></span>
+          <span class="sr-only">(opens in a new tab)</span>
+        </a>
+      </li>
+      <li>
+        <a class="spon" href="https://ethereum.org" target="_blank" rel="noopener">
+          <span class="spon__plate"><span class="spon__crop"><img src="assets/sponsors/ethereum.svg" alt="" width="1920" height="1080"></span></span>
+          <span class="spon__meta"><span class="spon__name">Ethereum Foundation</span><span class="spon__url">ethereum.org<svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></span></span>
+          <span class="sr-only">(opens in a new tab)</span>
+        </a>
+      </li>
+    </ul>
   </div>
 </section>
 
@@ -712,9 +750,6 @@ td.m { font: 500 14px/20px var(--f-mono); white-space: nowrap; }
     setTimeout(endIntro, still ? 700 : 2500);
   }
 
-  /* sponsors */
-  var sp = document.getElementById('spons'), img = '<svg class="ic ic--24" viewBox="0 0 24 24" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>';
-  for (var s = 1; s <= 6; s++) sp.insertAdjacentHTML('beforeend', '<div data-slot="sponsor-' + s + '"><span class="slot-logo">' + img + 'Sponsor logo ' + s + '</span></div>');
 
   var hero = document.getElementById('top'), mt = null, hovering = false;
   function schedule() {}
