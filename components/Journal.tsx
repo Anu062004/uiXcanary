@@ -1,15 +1,8 @@
 import Image from "next/image";
-import { Badge } from "./Badge";
-import { STEPS, type Status } from "@/lib/content";
-
-/* Renders `code` and *emphasis* inside a line of copy. */
-function rich(text: string) {
-  return text.split(/(`[^`]+`|\*[^*]+\*)/).map((part, i) => {
-    if (part.startsWith("`")) return <code key={i}>{part.slice(1, -1)}</code>;
-    if (part.startsWith("*")) return <em key={i}>{part.slice(1, -1)}</em>;
-    return part;
-  });
-}
+import { rich } from "./rich";
+import { StepFacts } from "./StepFacts";
+import { StepSequence } from "./StepSequence";
+import { STEPS } from "@/lib/content";
 
 export function Journal() {
   return (
@@ -38,6 +31,8 @@ export function Journal() {
         </article>
 
         <div className="steps-head rv"><p className="kicker"><b>02–05</b><span>How Canary fixes it</span></p></div>
+        <StepSequence />
+        {/* phones and reduced motion: the same steps as a card list */}
         <div className="steps">
           {STEPS.map((s, i) => (
             <article key={s.num} className="card step rv" style={{ "--d": i + 1 } as React.CSSProperties}>
@@ -48,11 +43,7 @@ export function Journal() {
                 <p className="kicker"><b>{s.num}</b><span>{s.kind}</span></p>
                 <h4>{s.title}</h4>
                 <p>{rich(s.body)}</p>
-                <p className="facts">
-                  {s.kind === "Measure"
-                    ? (s.facts as Status[]).map((st) => <Badge key={st} status={st} />)
-                    : (s.facts as string[]).map((f) => <span key={f} className="chip">{f}</span>)}
-                </p>
+                <StepFacts step={s} />
               </div>
             </article>
           ))}
