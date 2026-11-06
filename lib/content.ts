@@ -1,6 +1,7 @@
 import type { IconName } from "@/components/Icon";
 
 export const REPO_URL = "https://github.com/SCARPxVeNOM/canary_repo";
+export const SWAP_URL = "https://canary-swap.vercel.app";
 
 /* Set your Chrome Web Store URL here once; every "Get extension" button uses it. */
 export const EXTENSION_URL = "";
@@ -19,6 +20,7 @@ export const NAV = [
   { id: "top", label: "Home" },
   { id: "journal", label: "How it works" },
   { id: "evidence", label: "Evidence" },
+  { id: "swap", label: "Swap" },
   { id: "get", label: "Get Canary" },
   { id: "sponsors", label: "Sponsors" },
 ] as const;
@@ -57,7 +59,7 @@ export const STEPS: Step[] = [
     alt: "Three translucent glass rings in a row with a single teal light beam passing through all of them",
     title: "Reads go over Tor.",
     body: "Standard reads are answered from Canary’s own endpoint through anon-rpc and tor-js. The dapp’s provider never sees them, and the endpoint sees an exit relay, not you.",
-    facts: ["circuit per wallet", "15 ms batching", "3 s retry"],
+    facts: ["circuit per wallet", "15 ms batching", "3 s retry", "69 chains"],
   },
   {
     num: "03", kind: "Block", image: "/assets/images/note-3.jpg",
@@ -70,7 +72,7 @@ export const STEPS: Step[] = [
     num: "04", kind: "Measure", image: "/assets/images/note-4.jpg",
     alt: "Five frosted glass blocks of different heights: teal, amber, blue, grey and rust",
     title: "Every request counted.",
-    body: "Each request gets a label. *Not inspected* never counts as protected, and if the private route fails, the request fails closed.",
+    body: "Each request gets a label and a receipt of what each side saw. *Not inspected* never counts as protected, and if the private route fails, the request fails closed. When a site gets your address, Canary shows its privacy label from ENS.",
     facts: ["ok", "part", "blk", "ni"] as Status[],
   },
   {
@@ -90,6 +92,9 @@ export const EVIDENCE = [
   { dapp: "revoke.cash", note: "Four failed-closed calls recorded", before: 3, after: 0, routed: 100 },
   { dapp: "Snapshot", note: "Profile and avatar calls among blocked traffic", before: 4, after: 0, routed: 100 },
 ];
+
+/* Stress run of the extension on Canary Swap, 6 Nov 2026 (official repo: swap/test/stress.mjs, test-artifacts/swap/stress-canary.json). */
+export const STRESS = { calls: 651, checked: 397, requests: 269, mean: "1.4 s", p95: "1.8 s" };
 
 export const SPONSORS = [
   { name: "ENS", href: "https://ens.domains", domain: "ens.domains", logo: "/assets/sponsors/ens.svg", w: 300, h: 94, variant: "ens" as const },

@@ -9,10 +9,10 @@ const LABELS: Status[] = ["ok", "part", "blk", "exp", "ni"];
 
 export function GetCanary() {
   return (
-    <section className="sec" id="get" aria-labelledby="get-h">
+    <section className="sec sec--card" id="get" aria-labelledby="get-h">
       <div className="container">
         <div className="sec-head rv">
-          <p className="idx">03 — Get Canary</p>
+          <p className="idx">04 — Get Canary</p>
           <div><h2 id="get-h">Get <b>Canary</b></h2></div>
         </div>
         <div className="get">
@@ -26,7 +26,7 @@ export function GetCanary() {
             <dl className="specs">
               <div><dt>Build</dt><dd><code>cd extension &amp;&amp; npm install &amp;&amp; npm run build</code></dd></div>
               <div><dt>Load</dt><dd>Chrome <Arrow label="then" /> Extensions <Arrow label="then" /> Developer mode <Arrow label="then" /> <b>Load unpacked</b> <Arrow label="then" /> <code>extension/dist</code>.</dd></div>
-              <div><dt>Use</dt><dd>Reload your dapp tabs. The popup shows what was protected, blocked or missed.</dd></div>
+              <div><dt>Use</dt><dd>Reload your dapp tabs. The popup shows what was protected, blocked or missed, and the site’s privacy label from ENS.</dd></div>
             </dl>
             <div className="get-foot get-foot--col">
               <span className="get-foot__label">Every request gets a label</span>

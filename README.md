@@ -12,7 +12,8 @@
 <p align="center">
   <a href="https://uixcanary.vercel.app"><b>Website</b></a> ·
   <a href="https://github.com/SCARPxVeNOM/canary_repo"><b>Official product repo</b></a> ·
-  <a href="https://canary-leakydash.vercel.app"><b>Live demo dapp (LeakyDash)</b></a>
+  <a href="https://canary-leakydash.vercel.app"><b>Live demo dapp (LeakyDash)</b></a> ·
+  <a href="https://canary-swap.vercel.app"><b>Canary Swap</b></a>
 </p>
 
 <p align="center">
@@ -22,7 +23,7 @@
 ---
 
 > [!NOTE]
-> **This repository is the Canary landing website.** The product itself (browser extension, agent gateway, SDK, scanner and ENSv2 tooling) lives in the official repo, **[SCARPxVeNOM/canary_repo](https://github.com/SCARPxVeNOM/canary_repo)**. Everything about the product below is taken from that repo as of commit [`250983f`](https://github.com/SCARPxVeNOM/canary_repo/commit/250983f) (6 Nov 2026). For the source, tests and the latest status, go there.
+> **This repository is the Canary landing website.** The product itself (browser extension, agent gateway, SDK, scanner and ENSv2 tooling) lives in the official repo, **[SCARPxVeNOM/canary_repo](https://github.com/SCARPxVeNOM/canary_repo)**. Everything about the product below is taken from that repo as of commit [`2aebbe4`](https://github.com/SCARPxVeNOM/canary_repo/commit/2aebbe4) (6 Nov 2026). For the source, tests and the latest status, go there.
 
 ## Contents
 
@@ -31,6 +32,7 @@
 - [How it works](#how-it-works)
 - [What Canary reports](#what-canary-reports)
 - [Evidence: real dapps, before and after](#evidence-real-dapps-before-and-after)
+- [Canary Swap: a quote without your address](#canary-swap-a-quote-without-your-address)
 - [Canary for agents](#canary-for-agents)
 - [ENSv2: declared vs observed](#ensv2-declared-vs-observed)
 - [Get Canary](#get-canary)
@@ -60,7 +62,8 @@ Canary is a Chrome (MV3) browser extension that works on any dapp, unmodified:
 |---|---|---|
 | 🛡️ **Enforce** | Answers the dapp's own RPC reads through **anon-rpc over Tor**, so the dapp's provider never receives them. | A Tor exit relay, not you |
 | ⛔ **Block** | Blocks third-party requests that carry your wallet address: `fetch`, XHR, WebSocket, beacons and tracking pixels. | Nothing; the request never leaves |
-| 📊 **Measure** | Reports **measured coverage**: what was protected, blocked, left exposed, or not inspected. Gaps are shown, never hidden. | — |
+| 📊 **Measure** | Reports **measured coverage**: what was protected, blocked, left exposed, or not inspected, with a receipt per request of what each side saw. Gaps are shown, never hidden. | — |
+| 🏷️ **Label** | Shows the site's **privacy label** from ENS (its own `privacy.manifest`, or Canary's signed label under `labels.canary.eth`) in the popup, and on the page the moment it gets your address. | — |
 
 The dapp itself can always see your address and your IP. Canary protects you from **third parties**: RPC providers, analytics and trackers.
 
@@ -118,6 +121,8 @@ Each request over tor-js costs about 1 s whatever its size, so Canary sends fewe
 - **Hedge:** a read that fails, or hasn't answered within **3 s**, is resent on a fresh circuit and the first answer wins.
 - **Writes are untouched:** `eth_sendRawTransaction` and signing are forwarded byte for byte, once.
 
+Read endpoints are configured for **69 chains**, each checked over Tor.
+
 ## What Canary reports
 
 Coverage categories, from [`@canary/core`](https://github.com/SCARPxVeNOM/canary_repo/blob/main/packages/core/src/coverage.ts). The wording rule in the code is: *never "private" or "leak-free"; always "observed, with gaps".*
@@ -157,6 +162,35 @@ Who was receiving the address before Canary, for example: `browser-intake-datado
 On the live **LeakyDash** demo over tor-js: third parties receiving the address **2 → 0**, coverage **0% → 100%**.
 
 > These are recorded scans, not live data, and not a safety score.
+
+### Stress run: 651 calls through the extension
+
+`swap/test/stress.mjs` drives Canary Swap in Chromium with the extension and a test wallet, live on our tor-js gateways: 10 Sepolia swaps, 30 quotes on Sepolia and Ethereum, and bursts of reads fired at once from the page to 11 RPC URLs (single `fetch`, batches, XHR). Results: [`test-artifacts/swap/stress-canary.json`](https://github.com/SCARPxVeNOM/canary_repo/blob/main/test-artifacts/swap/stress-canary.json).
+
+- **651 calls, all answered through anon-rpc.** 0 failed closed, 0 direct. Canary counted every call in every burst.
+- **397 burst answers checked** against the same call sent straight to the node at the same block: none differed.
+- **Latency over Tor:** mean 1.4 s per request (p50 1.4 s, p95 1.8 s), across 269 requests fired in bursts. A quote on the page (3 to 5 calls in sequence) took 2.6 s on average.
+- All 10 swaps mined.
+
+## Canary Swap: a quote without your address
+
+Live at **[canary-swap.vercel.app](https://canary-swap.vercel.app)**, built for the Uniswap track. Source: [`swap/`](https://github.com/SCARPxVeNOM/canary_repo/tree/main/swap).
+
+Asking app.uniswap.org for a quote sends your address to Uniswap's server as `swapper`, together with the tokens and the exact amount, before you sign anything ([scan](https://github.com/SCARPxVeNOM/canary_repo/tree/main/test-artifacts/scans/quote)):
+
+```json
+POST /quote
+{ "type": "EXACT_INPUT", "amount": "1000000000000000000", "tokenIn": "0x0000…0000",
+  "tokenOut": "0xA0b8…eB48", "swapper": "0xA683…d4b8", … }
+```
+
+A quote doesn't need the address. Canary Swap asks the Uniswap v4 Quoter over `eth_call` instead, so the request holds the pool key and the amount only. The page shows every request a quote sent, decoded, and checks that your address is in none of them.
+
+- **Quote:** the V4 Quoter and StateView over `eth_call`, on Sepolia and Ethereum (best of three ETH/USDC pools).
+- **Swap:** one Universal Router transaction (`V4_SWAP`) that your wallet signs, with Permit2 approvals for tokens, on our ETH/CNRY v4 pool on Sepolia.
+- **ENS:** `swap.canary.eth` declares one recipient, the public RPC, and carries the verifier's signed verdict: `matches`.
+- **With Canary**, the page's reads go over anon-rpc, so the RPC doesn't see your IP either.
+- **Agents:** [`examples/viem-agent/swap.mjs`](https://github.com/SCARPxVeNOM/canary_repo/blob/main/examples/viem-agent/swap.mjs) does the same swap through the Canary gateway, with the signed transaction sent over anon-rpc.
 
 ## Canary for agents
 
@@ -215,8 +249,10 @@ For dapps, Canary compares what a site **declares** with what Canary **observes*
 - A site points at its ENS name via `/.well-known/canary.json`. Canary reads that name's `url` and `privacy.manifest` records **over anon-rpc**, so no RPC provider learns which dapp you're on. The binding must hold both ways.
 - The popup lists every third party that received your address or RPC calls as **declared** or **not declared**.
 - An independent verifier (`verifier.canary.eth`) scans the site and signs a verdict into `privacy.verdict.canary` under a one-key grant. Canary checks the EIP-712 signature, shows expired verdicts as expired, and shows *"independent verification revoked"* if the verifier's role is gone.
+- Most dapps publish no manifest. For those, the verifier signs **Canary's label** under `labels.canary.eth` (for example `app-aave-com.labels.canary.eth`), from the scans: for Uniswap, Aave, ENS, revoke.cash and Snapshot.
+- **The connect notice:** the moment a page learns your address, Canary shows the site's label on the page, and anything the verifier found beyond it.
 
-Live on Sepolia: `leakydash.eth`, `canary.eth`, `verifier.canary.eth`, `agents.canary.eth` and `trader-01.agents.canary.eth`.
+Live on Sepolia: `leakydash.eth`, `canary.eth`, `verifier.canary.eth`, `labels.canary.eth`, `swap.canary.eth`, `agents.canary.eth` and `trader-01.agents.canary.eth`.
 
 ## Get Canary
 
@@ -274,12 +310,13 @@ Summarised from the official README.
 
 | Part | State (6 Nov 2026) |
 |---|---|
-| Browser extension | Working. End-to-end test 41/41 against a leaky fixture dapp |
+| Browser extension | Working. End-to-end test 51/51 against a leaky fixture dapp. Stress run: 651 calls, all through anon-rpc |
 | Dapp scanner | Working. Results above |
 | Demo dapp ([LeakyDash](https://canary-leakydash.vercel.app)) | Live |
-| ENSv2 manifests and signed verdicts | Live on Sepolia |
+| ENSv2 manifests, signed verdicts and labels | Live on Sepolia |
+| Canary Swap (Uniswap v4) | [Live](https://canary-swap.vercel.app): quotes with no address, swaps on Sepolia |
 | `@canary/core` | Done, shared by the extension and agent packages |
-| Agent gateway | Working; live over tor-js: 24/24 checks |
+| Agent gateway | Working: 42/42 tests; live over tor-js: 24/24 checks, and a v4 swap through it |
 | Agent SDK (`@canary/agent`) | Working: viem, ethers, `fetch`, LLM pseudonymizer, `wrapTools` |
 | Agent ENSv2 names | Working; live on Sepolia |
 | AgentKit / Eliza / LangChain adapters | Not started |
@@ -301,9 +338,9 @@ The site is a [Next.js](https://nextjs.org) (App Router) app written in React an
 app/layout.tsx           fonts (next/font), metadata and share preview, theme script
 app/page.tsx             the page: composes the sections below
 app/globals.css          design tokens (light and dark), layout and component styles
-components/              Header, Intro, Hero, Journal, Evidence, GetCanary, Sponsors, EndBand, Footer
+components/              Header, Intro, Hero, Journal, Evidence, Swap, GetCanary, Sponsors, EndBand, Footer
                          + Badge, Icon, Arrow, ExtensionLink, LeakCount, Reveal
-lib/content.ts           copy and data: nav, spheres, steps, evidence rows, sponsors, links
+lib/content.ts           copy and data: nav, spheres, steps, evidence rows, stress-run figures, sponsors, links
 public/assets/           logo, favicon, images and sponsor logos
 ```
 
@@ -319,7 +356,7 @@ npm run build && npm start   # production build
 
 **Editing:**
 - **Chrome Web Store link:** set `EXTENSION_URL` in `lib/content.ts`, and every "Get extension" button will point to it.
-- **Copy and data:** spheres, steps, evidence rows and sponsors are in `lib/content.ts`.
+- **Copy and data:** spheres, steps, evidence rows, the stress-run figures and sponsors are in `lib/content.ts`.
 - **Share preview:** add `public/assets/og.jpg` (1200 × 630); `app/layout.tsx` already references it.
 - **Sponsors:** the section lists the ETHGlobal Mumbai 2026 prize sponsors ENS, the Uniswap Foundation and the Ethereum Foundation ([source](https://ethglobal.com/events/mumbai/prizes)). They sponsor the event, not Canary. The logos are the organizations' own files, unmodified: [ENS](https://github.com/ensdomains/ens-app-v3/blob/main/src/assets/ENSFull.svg), [Uniswap](https://github.com/Uniswap/brand-assets/blob/main/Uniswap%20Brand%20Assets/Uniswap_horizontallogo_pink.svg) and [Ethereum](https://ethereum.org/assets/) (`ethereum-logo-landscape-purple.svg`). All trademarks belong to their owners.
 

@@ -3,6 +3,7 @@ import { Header } from "@/components/Header";
 import { Hero } from "@/components/Hero";
 import { Journal } from "@/components/Journal";
 import { Evidence } from "@/components/Evidence";
+import { Swap } from "@/components/Swap";
 import { GetCanary } from "@/components/GetCanary";
 import { Sponsors } from "@/components/Sponsors";
 import { EndBand } from "@/components/EndBand";
@@ -18,6 +19,7 @@ export default function Home() {
         <Hero />
         <Journal />
         <Evidence />
+        <Swap />
         <GetCanary />
         <Sponsors />
         <EndBand />

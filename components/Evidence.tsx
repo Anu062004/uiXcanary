@@ -2,7 +2,7 @@ import Image from "next/image";
 import { Badge } from "./Badge";
 import { Arrow } from "./Arrow";
 import { LeakCount } from "./LeakCount";
-import { EVIDENCE } from "@/lib/content";
+import { EVIDENCE, STRESS } from "@/lib/content";
 
 export function Evidence() {
   return (
@@ -12,7 +12,7 @@ export function Evidence() {
           <p className="idx">02 — Evidence</p>
           <div>
             <h2 id="ev-h">The <b>evidence</b></h2>
-            <p className="lede">Recorded scans, 6 Nov 2026. Not live data.</p>
+            <p className="lede">Recorded scans and runs, 6 Nov 2026. Not live data.</p>
           </div>
         </div>
         <div className="ev">
@@ -51,6 +51,24 @@ export function Evidence() {
             </div>
             <p className="note">Synthetic wallet; load, connect and scroll flows. Not a safety score.</p>
           </div>
+          <article className="card ev-run rv" style={{ "--d": 2 } as React.CSSProperties} aria-label="Stress run">
+            <div className="stat">
+              <span className="sample" style={{ alignSelf: "flex-start" }}>STRESS RUN · 6 NOV 2026</span>
+              <p className="big"><span>{STRESS.calls}</span></p>
+              <p>calls from one page answered through anon-rpc: 10 Sepolia swaps, 30 quotes on two chains, and bursts to 11 RPC URLs.</p>
+              <ul><li><Badge status="ok">0 failed closed · 0 direct</Badge></li></ul>
+            </div>
+            <div className="stat">
+              <span className="sample" style={{ alignSelf: "flex-start" }}>CHECKED</span>
+              <p className="big">{STRESS.checked}</p>
+              <p>of them checked against the same call sent straight to the node, at the same block. None differed.</p>
+            </div>
+            <div className="stat">
+              <span className="sample" style={{ alignSelf: "flex-start" }}>LATENCY</span>
+              <p className="big">{STRESS.mean}</p>
+              <p>mean per request over Tor, across {STRESS.requests} requests fired in bursts. p95 {STRESS.p95}.</p>
+            </div>
+          </article>
         </div>
       </div>
     </section>

@@ -196,7 +196,7 @@ h4 { margin: 0; font: 500 20px/1.2 var(--f-display); text-wrap: balance; }
 .kicker { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; font: 500 12px/16px var(--f-mono); letter-spacing: .06em; text-transform: uppercase; color: var(--text-2); }
 .kicker b { color: var(--accent); font-weight: 500; }
 .post p, .step p { margin: 0; color: var(--text-2); }
-.post code, .step code, .get code { font: 500 13px/1 var(--f-mono); background: var(--subtle); padding: 2px 6px; border-radius: 4px; overflow-wrap: anywhere; }
+.post code, .step code, .get code, .lede code { font: 500 13px/1 var(--f-mono); background: var(--subtle); padding: 2px 6px; border-radius: 4px; overflow-wrap: anywhere; }
 .lead .body p { font-size: 16px; }
 .leaks { margin: 4px 0 0; }
 .leaks > div { grid-template-columns: 96px minmax(0, 1fr); padding: 10px 0; }
@@ -240,6 +240,10 @@ td.m { font: 500 14px/20px var(--f-mono); white-space: nowrap; }
 .stat .big span { color: var(--ok); }
 .stat p { margin: 0; max-width: 34ch; color: var(--text-2); font-size: 16px; }
 .stat ul { margin: 8px 0 0; padding: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 8px; }
+.ev-run { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); overflow: hidden; }
+.ev-run .stat { justify-content: flex-start; }
+.ev-run .stat + .stat { border-left: 1px solid var(--border); }
+.ev-run .big { font-size: clamp(52px, 5.4vw, 84px); }
 
 /* get started */
 .get { margin-top: 40px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
@@ -255,7 +259,7 @@ td.m { font: 500 14px/20px var(--f-mono); white-space: nowrap; }
 .get pre { margin: 0; padding: 16px 18px; border-radius: 12px; background: #102D38; color: #F5FAFC; font: 400 13px/20px var(--f-mono); overflow-x: auto; }
 :root[data-theme="dark"] .get pre { background: #081B24; }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .get pre { background: #081B24; } }
-.get pre .k { color: #00C9B7; } .get pre .s { color: #37C6CF; }
+.get pre .k { color: #00C9B7; } .get pre .s { color: #37C6CF; } .get pre .x { color: #F7A083; } .get pre .c { color: #86A4AE; }
 .specs { margin: 4px 0 0; border-top: 1px solid var(--border); }
 .specs > div { display: grid; grid-template-columns: 88px minmax(0, 1fr); gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--border); }
 .specs dt { padding-top: 2px; font: 500 11px/18px var(--f-mono); letter-spacing: .1em; text-transform: uppercase; color: var(--accent); }
@@ -277,6 +281,7 @@ td.m { font: 500 14px/20px var(--f-mono); white-space: nowrap; }
 .spons { margin: 40px 0 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
 .spon { display: flex; flex-direction: column; height: 100%; border: 1px solid var(--border); border-radius: 16px; background: var(--bg); color: var(--text); text-decoration: none; overflow: hidden; transition: border-color .2s, box-shadow .2s; }
 .spon:hover { border-color: var(--accent); box-shadow: var(--shadow-card); }
+.sec:not(.sec--card) .spon { background: var(--card); }
 /* logos always sit on white, so each keeps its official colours in both themes */
 .spon__plate { display: grid; place-items: center; aspect-ratio: 16 / 9; padding: 24px; background: #FFFFFF; border-bottom: 1px solid var(--border); }
 .spon__logo { display: block; height: clamp(34px, 3.4vw, 46px); width: auto; max-width: 100%; }
@@ -360,7 +365,8 @@ td.m { font: 500 14px/20px var(--f-mono); white-space: nowrap; }
   .orb--c { width: 21vw; left: 72%; top: 40%; }
   .hero { min-height: max(100svh, 760px); }
   .hero-foot { flex-wrap: wrap; gap: 12px 16px; }
-  .sec-head, .lead, .ev-lead, .get, .end .container, .foot__top { grid-template-columns: minmax(0, 1fr); }
+  .sec-head, .lead, .ev-lead, .ev-run, .get, .end .container, .foot__top { grid-template-columns: minmax(0, 1fr); }
+  .ev-run .stat + .stat { border-left: 0; border-top: 1px solid var(--border); }
   .foot__cols { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
   .foot__bar { align-items: center; }
   .foot__fine { order: 3; flex-basis: 100%; }

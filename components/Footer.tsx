@@ -18,6 +18,7 @@ export function Footer() {
               <p className="foot__h">product</p>
               <a href="#journal">how it works</a>
               <a href="#evidence">evidence</a>
+              <a href="#swap">canary swap</a>
               <a href="#get">get canary</a>
             </div>
             <div>
