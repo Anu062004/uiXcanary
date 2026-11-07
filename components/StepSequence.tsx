@@ -6,20 +6,19 @@ import { rich } from "./rich";
 import { StepFacts } from "./StepFacts";
 import { ProblemText } from "./ProblemText";
 import { PROBLEM, STEPS } from "@/lib/content";
+import { onScrollFrame, pageTop, clamp01, smooth } from "@/lib/scroll";
 
 /*
   Desktop "How it works": the section pins while you scroll, and the images arrive
   one by one (01 the problem, then 02–05 the fixes), each sliding up over the last
   as the one beneath shrinks back. Per image, --e is how far it has entered (0 → 1)
   and --c how far the next one has covered it (0 → 1); the copy on the left follows
-  the active slide. The position eases toward the scroll target, so a quick flick
-  still plays out smoothly. Phones and reduced motion get the card layout in Journal.
+  the active slide. The position follows the scroll directly (no catch-up lag). Phones and reduced motion get the card layout in Journal.
 */
 const SLIDES = [
   { num: PROBLEM.num, kind: PROBLEM.kind, image: PROBLEM.image, alt: PROBLEM.alt, step: null },
   ...STEPS.map((s) => ({ num: s.num, kind: s.kind, image: s.image, alt: s.alt, step: s })),
 ];
-const smooth = (x: number) => { const k = Math.min(1, Math.max(0, x)); return k * k * (3 - 2 * k); };
 
 export function StepSequence() {
   const root = useRef<HTMLDivElement>(null);
@@ -30,40 +29,34 @@ export function StepSequence() {
     const el = root.current;
     if (!el) return;
     const n = SLIDES.length;
-    let raf = 0, last = -1, cur = -1, target = 0;
-
-    const measure = () => {
-      const sticky = el.firstElementChild as HTMLElement;
-      const r = el.getBoundingClientRect(), top = parseFloat(getComputedStyle(sticky).top) || 0;
-      const t = Math.min(1, Math.max(0, (top - r.top) / Math.max(1, r.height - sticky.offsetHeight)));
-      return t * (n - 1); // 0 … n-1: which slide we are on, fractionally
-    };
-    const paint = (s: number) => {
-      figs.current.forEach((f, i) => {
-        if (!f) return;
-        // each change happens in the middle of its scroll segment, so every image holds for a while
-        const e = i === 0 ? 1 : smooth((s - (i - 1)) * 1.7 - 0.35);
-        const c = smooth((s - i) * 1.7 - 0.35);
-        f.style.setProperty("--e", e.toFixed(4));
-        f.style.setProperty("--c", c.toFixed(4));
-      });
-      const a = Math.min(n - 1, Math.max(0, Math.round(s)));
-      if (a !== last) { last = a; setActive(a); }
-    };
-    const frame = () => {
-      raf = 0;
-      if (getComputedStyle(el).display === "none") return;
-      target = measure();
-      cur = cur < 0 ? target : cur + (target - cur) * 0.085; // ease toward the scroll position
-      if (Math.abs(target - cur) < 0.0005) cur = target;
-      paint(cur);
-      if (cur !== target) raf = requestAnimationFrame(frame);
-    };
-    const kick = () => { if (!raf) raf = requestAnimationFrame(frame); };
-    kick();
-    addEventListener("scroll", kick, { passive: true });
-    addEventListener("resize", kick);
-    return () => { removeEventListener("scroll", kick); removeEventListener("resize", kick); cancelAnimationFrame(raf); };
+    let on = false, from = 0, span = 1, last = -1, prev = "";
+    return onScrollFrame({
+      measure: () => {
+        on = getComputedStyle(el).display !== "none";
+        prev = "";
+        if (!on) return;
+        const sticky = el.firstElementChild as HTMLElement;
+        from = pageTop(el) - (parseFloat(getComputedStyle(sticky).top) || 0);
+        span = Math.max(1, el.offsetHeight - sticky.offsetHeight);
+      },
+      frame: (y) => {
+        if (!on) return;
+        const s = clamp01((y - from) / span) * (n - 1); // 0 … n-1: which slide we are on, fractionally
+        const key = s.toFixed(4);
+        if (key === prev) return;
+        prev = key;
+        figs.current.forEach((f, i) => {
+          if (!f) return;
+          // each change happens in the middle of its scroll segment, so every image holds for a while
+          const e = i === 0 ? 1 : smooth((s - (i - 1)) * 1.7 - 0.35);
+          const c = smooth((s - i) * 1.7 - 0.35);
+          f.style.setProperty("--e", e.toFixed(4));
+          f.style.setProperty("--c", c.toFixed(4));
+        });
+        const a = Math.min(n - 1, Math.max(0, Math.round(s)));
+        if (a !== last) { last = a; setActive(a); }
+      },
+    });
   }, []);
 
   /* clicking a slide in the index scrolls to its point in the sequence */
@@ -84,7 +77,7 @@ export function StepSequence() {
             {SLIDES.map((s, i) => (
               <li key={s.num}>
                 <button type="button" className={i === active ? "is-on" : undefined} aria-current={i === active ? "step" : undefined} onClick={() => go(i)}>
-                  <b>{s.num}</b>{s.kind}
+                  <b>{s.num}</b><span className="seq__navk">{s.kind}</span>
                 </button>
               </li>
             ))}

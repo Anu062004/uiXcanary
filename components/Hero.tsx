@@ -5,6 +5,7 @@ import { Icon } from "./Icon";
 import { Badge } from "./Badge";
 import { ExtensionLink } from "./ExtensionLink";
 import { ORBS, REPO_URL, type Orb } from "@/lib/content";
+import { onScrollFrame } from "@/lib/scroll";
 
 export function Hero() {
   const [active, setActive] = useState<Orb | null>(null);
@@ -28,33 +29,39 @@ export function Hero() {
 
   /* parallax: spheres drift with the pointer and scroll; the copy lifts and fades as you leave the hero */
   useEffect(() => {
-    const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const coarse = matchMedia("(hover: none)").matches;
-    let target = scrollY, cur = target, mx = 0, my = 0, tmx = 0, tmy = 0, raf = 0;
-    const onScroll = () => { target = scrollY; };
-    const onMove = (e: PointerEvent) => { tmx = (e.clientX / innerWidth - 0.5) * -1; tmy = (e.clientY / innerHeight - 0.5) * -1; };
-    addEventListener("scroll", onScroll, { passive: true });
-    if (!coarse) addEventListener("pointermove", onMove, { passive: true });
-    const tick = () => {
-      cur += (target - cur) * (still ? 1 : 0.12);
-      mx += (tmx - mx) * 0.06; my += (tmy - my) * 0.06;
-      const vh = innerHeight, p = Math.min(cur / vh, 1.4);
-      if (!still && cur < vh * 1.5) {
-        ORBS.forEach((o, i) => {
-          const el = orbRefs.current[i];
-          if (!el) return;
-          const tx = mx * o.depth + o.spread * cur, ty = my * o.depth + o.speed * cur;
-          el.style.transform = `translate3d(${tx.toFixed(1)}px,${ty.toFixed(1)}px,0) scale(${(1 + p * 0.16).toFixed(3)})`;
-        });
-        if (copy.current) {
-          copy.current.style.transform = `translate3d(0,${(cur * 0.3).toFixed(1)}px,0)`;
-          copy.current.style.opacity = Math.max(0, 1 - p * 1.25).toFixed(3);
-        }
+    let y = scrollY, vh = innerHeight, mx = 0, my = 0, tmx = 0, tmy = 0, raf = 0;
+    const paint = () => {
+      if (y > vh * 1.5) return; // hero is off screen: nothing to move
+      const p = Math.min(y / vh, 1.4);
+      ORBS.forEach((o, i) => {
+        const el = orbRefs.current[i];
+        if (!el) return;
+        const tx = mx * o.depth + o.spread * y, ty = my * o.depth + o.speed * y;
+        el.style.transform = `translate3d(${tx.toFixed(1)}px,${ty.toFixed(1)}px,0) scale(${(1 + p * 0.16).toFixed(3)})`;
+      });
+      if (copy.current) {
+        copy.current.style.transform = `translate3d(0,${(y * 0.3).toFixed(1)}px,0)`;
+        copy.current.style.opacity = Math.max(0, 1 - p * 1.25).toFixed(3);
       }
-      raf = requestAnimationFrame(tick);
     };
-    raf = requestAnimationFrame(tick);
-    return () => { cancelAnimationFrame(raf); removeEventListener("scroll", onScroll); removeEventListener("pointermove", onMove); };
+    /* pointer drift eases toward the pointer, and the loop stops once it has caught up */
+    const drift = () => {
+      raf = 0;
+      mx += (tmx - mx) * 0.08; my += (tmy - my) * 0.08;
+      if (Math.abs(tmx - mx) < 0.001 && Math.abs(tmy - my) < 0.001) { mx = tmx; my = tmy; }
+      paint();
+      if (mx !== tmx || my !== tmy) raf = requestAnimationFrame(drift);
+    };
+    const onMove = (e: PointerEvent) => {
+      if (scrollY > innerHeight * 1.5) return;
+      tmx = (e.clientX / innerWidth - 0.5) * -1; tmy = (e.clientY / innerHeight - 0.5) * -1;
+      if (!raf) raf = requestAnimationFrame(drift);
+    };
+    if (!coarse) addEventListener("pointermove", onMove, { passive: true });
+    const stop = onScrollFrame({ frame: (sy, h) => { y = sy; vh = h; paint(); } });
+    return () => { stop(); cancelAnimationFrame(raf); removeEventListener("pointermove", onMove); };
   }, []);
 
   const highlight = (i: number, e?: React.PointerEvent) => {

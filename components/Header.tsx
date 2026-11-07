@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Icon } from "./Icon";
 import { NAV } from "@/lib/content";
+import { onScrollFrame } from "@/lib/scroll";
 
 export function Header() {
   const [active, setActive] = useState<string>("top");
@@ -12,18 +13,15 @@ export function Header() {
 
   /* progress bar + compact header on scroll */
   useEffect(() => {
-    let raf = 0;
-    const update = () => {
-      raf = 0;
-      const max = document.documentElement.scrollHeight - innerHeight;
-      if (progress.current) progress.current.style.transform = `scaleX(${max > 0 ? scrollY / max : 0})`;
-      setScrolled(scrollY > 24);
-    };
-    const onScroll = () => { if (!raf) raf = requestAnimationFrame(update); };
-    update();
-    addEventListener("scroll", onScroll, { passive: true });
-    addEventListener("resize", onScroll);
-    return () => { removeEventListener("scroll", onScroll); removeEventListener("resize", onScroll); cancelAnimationFrame(raf); };
+    let max = 1, was: boolean | null = null;
+    return onScrollFrame({
+      measure: () => { max = document.documentElement.scrollHeight - innerHeight; },
+      frame: (y) => {
+        if (progress.current) progress.current.style.transform = `scaleX(${max > 0 ? Math.min(1, y / max).toFixed(4) : 0})`;
+        const is = y > 24;
+        if (is !== was) { was = is; setScrolled(is); }
+      },
+    });
   }, []);
 
   /* scroll spy */

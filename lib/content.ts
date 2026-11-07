@@ -4,22 +4,23 @@ export const REPO_URL = "https://github.com/SCARPxVeNOM/canary_repo";
 export const SWAP_URL = "https://canary-swap.vercel.app";
 
 /* Canary Swap story: three full-screen images, one after another (components/SwapStory.tsx).
-   tone: the image's brightness, so the caption picks readable colours. */
+   tone: the image's brightness, so the caption picks readable colours; bg: the image's own edge
+   colours, the backdrop on phones where the wide image sits full-width inside a tall screen. */
 export const SWAP_STORY = [
   {
-    image: "/assets/images/swap.jpg", tone: "light" as const,
+    image: "/assets/images/swap.jpg", bg: "linear-gradient(#BDCDD5, #B5C6D0)", tone: "light" as const,
     alt: "Two frosted glass coins pass each other along a teal light line through a glass arch, while a rust-red paper tag lies left behind on the near side",
     kicker: "Canary Swap", title: "Quote without your address.",
     body: "The swap goes through. Your address stays behind.",
   },
   {
-    image: "/assets/images/swap-quote.jpg", tone: "dark" as const,
+    image: "/assets/images/swap-quote.jpg", bg: "linear-gradient(#082833, #0D343E)", tone: "dark" as const,
     alt: "A glass instrument with a teal gauge hovers over a frosted teal coin on a glass rail, joined only by a single vertical light line",
     kicker: "Quote", title: "The price comes from the chain.",
     body: "An `eth_call` to the Uniswap v4 Quoter with the pool key and the amount. No quote API sees who is asking.",
   },
   {
-    image: "/assets/images/swap-compare.jpg", tone: "light" as const,
+    image: "/assets/images/swap-compare.jpg", bg: "linear-gradient(#EAEFF5, #D9E0E6)", tone: "light" as const,
     alt: "Two glass tiles side by side: the frosted left one holds a glowing rust-red bead, the clear right one with a teal edge is empty",
     kicker: "What a quote sends", title: "Same price. One less secret.",
     body: "app.uniswap.org sends your wallet as `swapper`. Canary Swap sends no address. In our runs both came to about 2,236 USDC.",

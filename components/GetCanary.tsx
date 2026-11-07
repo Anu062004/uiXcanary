@@ -25,7 +25,7 @@ export function GetCanary() {
           <div><h2 id="get-h">Get <b>Canary</b></h2></div>
         </div>
         <Deck>
-          <div className="card deck__card">
+          <div className="card deck__card" data-pop="0">
             <figure className="get-fig" data-fx>
               <Image src={ext.image} alt={ext.alt} fill sizes="(max-width: 860px) 100vw, 580px" />
             </figure>
@@ -43,7 +43,7 @@ export function GetCanary() {
             </div>
           </div>
 
-          <div className="card deck__card">
+          <div className="card deck__card" data-pop="1">
             <figure className="get-fig" data-fx>
               <Image src={agent.image} alt={agent.alt} fill sizes="(max-width: 860px) 100vw, 580px" />
             </figure>
